@@ -17,6 +17,8 @@ public class FootballMatch {
     Persist persist;
     @Autowired
     Utils utils;
+    final int matchDurationSeconds = 30;
+    final int timePerIterationMillis = 1000;
 
     @PostConstruct
     public void startMatch() {
@@ -35,15 +37,14 @@ public class FootballMatch {
                     for (int i = 0; i < matchList.size(); i++) {
                         if (matchList.get(i).getDate().equals(currentTime)){
                             matchesInRound++;
-                            int matchDurationSeconds = 30;
                             Result result = choseWinner(matchList.get(i));
                             int desiredResultTeam1 = result.getResultTeam1();
                             int desiredResultTeam2 = result.getResultTeam2();
                             List <Integer> secondsOfGoals = selectNumbers(desiredResultTeam1+desiredResultTeam2,30);
                             System.out.println(secondsOfGoals);
-                            int timePerIterationMillis = 1000;
                             int index = 0;
                             for(int time=1; time<=matchDurationSeconds; time++) {
+                                matchList.get(i).setTime(time);
                                 if(!secondsOfGoals.isEmpty()) {
                                     if (time == secondsOfGoals.get(index)) {
                                         if (matchList.get(i).getResultTeam1() < desiredResultTeam1 && matchList.get(i).getResultTeam2() < desiredResultTeam2) {
@@ -57,16 +58,14 @@ public class FootballMatch {
                                         } else {
                                             matchList.get(i).setResultTeam2(matchList.get(i).getResultTeam2() + 1);
                                         }
-                                        persist.save(matchList.get(i));
                                         System.out.println(time);
                                         System.out.println(matchList.get(i).getTeam1().getName() + " " + matchList.get(i).getResultTeam1());
                                         System.out.println(matchList.get(i).getTeam2().getName() + " " + matchList.get(i).getResultTeam2());
-
                                         if (index < desiredResultTeam1 + desiredResultTeam2 - 1)
                                             index++;
                                     }
                                 }
-
+                                persist.save(matchList.get(i));
                                 try {
                                     Thread.sleep(timePerIterationMillis);
                                 } catch (InterruptedException e) {

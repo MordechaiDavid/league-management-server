@@ -47,6 +47,7 @@
         <property name="oddsTeam2" type="double" column="odds_team_2"/>
         <property name="resultTeam1" type="int" column="resultTeam1"/>
         <property name="resultTeam2" type="int" column="resultTeam2"/>
+        <property name="time" type="int" column="time"/>
     </class>
 
     <class name="com.ashcollege.entities.Bet" table="gambling" lazy="false">
@@ -57,6 +58,8 @@
         <many-to-one name="gambler" column="gambler_id" class="com.ashcollege.entities.User"/>
         <property name="sumOfBet" type="int" column="sum_of_bet"/>
         <property name="result" type="int" column="result"/>
+        <property name="winRatio" type="double" column="win_ratio"/>
+
     </class>
 
 

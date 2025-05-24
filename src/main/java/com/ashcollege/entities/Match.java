@@ -14,10 +14,10 @@ public class Match {
     private int roundNum;
     private double oddsTeam1;
     private double oddsTeam2;
-    private double   oddsDraw;
+    private double oddsDraw;
     private int resultTeam1;
     private int resultTeam2;
-
+    private int time;
 
 
     public Match(int roundNum, Team team1,Team team2, String date) {
@@ -111,6 +111,14 @@ public class Match {
 
     public void setOddsDraw(double oddsDraw) {
         this.oddsDraw = oddsDraw;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
     }
 
     public int choseWinner() {

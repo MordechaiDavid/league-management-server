@@ -115,7 +115,7 @@ public class Persist {
         for (Match match : allMatches) {
             try {
                 Date matchDate = simpleDateFormat.parse(match.getDate());
-                long thirtySecondsInMillis = 30 * 1000;
+                long thirtySecondsInMillis = 31 * 1000;
                 Date matchLiveDate = new Date(matchDate.getTime() + thirtySecondsInMillis);
 
                 if (matchType.equals("available") && matchDate.after(today)) {
