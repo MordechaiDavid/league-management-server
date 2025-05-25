@@ -25,7 +25,7 @@ public class Match {
         this.team2 = team2;
         this.date = date;
         this.roundNum = roundNum;
-
+        this.time=-1;
     }
     public Match() {
 
