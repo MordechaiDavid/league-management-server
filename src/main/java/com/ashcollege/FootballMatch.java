@@ -25,18 +25,19 @@ public class FootballMatch {
         Runnable matchProgression = new Runnable() {
             @Override
             public void run() {
-                int matchesInRound = 0 , roundNum = 1;
-                while (roundNum < 8) {
-                    Date today = new Date();
-                    Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-                    calendar.setTime(today);
-                    Date currentDate = calendar.getTime();
-                    SimpleDateFormat formatter = new SimpleDateFormat("d/M/yy H:mm:ss");
-                    String currentTime = formatter.format(currentDate);
+                int matchesInRound = 0 , roundNum=1, matchIndex = 0;
+                while (true) {
+                    List<Match> availableMatches = persist.getMatchesByType("available");
                     List<Match> matchList = persist.loadList(Match.class);
+                    if(!availableMatches.isEmpty()&& roundNum<8){
+                        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                        Date currentDate = calendar.getTime();
+                        SimpleDateFormat formatter = new SimpleDateFormat("d/M/yy H:mm:ss");
+                        String currentTime = formatter.format(currentDate);
                     for (int i = 0; i < matchList.size(); i++) {
                         if (matchList.get(i).getDate().equals(currentTime)){
                             matchesInRound++;
+                            matchIndex++;
                             Result result = choseWinner(matchList.get(i));
                             int desiredResultTeam1 = result.getResultTeam1();
                             int desiredResultTeam2 = result.getResultTeam2();
@@ -79,7 +80,7 @@ public class FootballMatch {
                                 updateBalanceOfWinner(bettingOnMatch);
 
                         }
-                        if(matchesInRound ==4){
+                        if(matchesInRound == 4){
                             Random random = new Random();
                             int numOfTeams = random.nextInt(8);
                             System.out.println("random is "+numOfTeams);
@@ -91,6 +92,19 @@ public class FootballMatch {
                             utils.calculateOdds(persist.getMatchesByType("available"));
                             roundNum++;
                             matchesInRound =0;
+                        }
+                    }
+                }
+                    else{
+                        persist.deleteAllRowsFromTable("gambling");
+                        persist.deleteAllRowsFromTable("matches");
+                        persist.deleteAllRowsFromTable("teams");
+                        utils.createTeams();
+                        roundNum = 1; matchIndex=1; matchesInRound =0;
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
                     }
                 }

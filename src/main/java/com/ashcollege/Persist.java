@@ -40,7 +40,10 @@ public class Persist {
     public void save(Object object) {
         this.sessionFactory.getCurrentSession().saveOrUpdate(object);
     }
-
+    public void deleteAllRowsFromTable(String tableName) {
+        String sql = "DELETE FROM " + tableName;
+        this.sessionFactory.getCurrentSession().createNativeQuery(sql).executeUpdate();
+    }
     public <T> T loadObject(Class<T> clazz, int oid) {
         return this.getQuerySession().get(clazz, oid);
     }
