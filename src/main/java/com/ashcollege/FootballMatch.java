@@ -29,7 +29,7 @@ public class FootballMatch {
                 while (true) {
                     List<Match> availableMatches = persist.getMatchesByType("available");
                     List<Match> matchList = persist.loadList(Match.class);
-                    if(!availableMatches.isEmpty()&& roundNum<8){
+                    if(!availableMatches.isEmpty() && matchIndex<28){
                         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
                         Date currentDate = calendar.getTime();
                         SimpleDateFormat formatter = new SimpleDateFormat("d/M/yy H:mm:ss");
