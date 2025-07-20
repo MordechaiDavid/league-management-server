@@ -25,11 +25,11 @@ public class FootballMatch {
         Runnable matchProgression = new Runnable() {
             @Override
             public void run() {
-                int matchesInRound = 0 , roundNum=1, matchIndex = 0;
+                int matchesInRound = 0 , roundNum=1;
                 while (true) {
                     List<Match> availableMatches = persist.getMatchesByType("available");
                     List<Match> matchList = persist.loadList(Match.class);
-                    if(!availableMatches.isEmpty() && matchIndex<28){
+                    if(!availableMatches.isEmpty()){
                         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
                         Date currentDate = calendar.getTime();
                         SimpleDateFormat formatter = new SimpleDateFormat("d/M/yy H:mm:ss");
@@ -37,7 +37,6 @@ public class FootballMatch {
                     for (int i = 0; i < matchList.size(); i++) {
                         if (matchList.get(i).getDate().equals(currentTime)){
                             matchesInRound++;
-                            matchIndex++;
                             Result result = choseWinner(matchList.get(i));
                             int desiredResultTeam1 = result.getResultTeam1();
                             int desiredResultTeam2 = result.getResultTeam2();
@@ -100,7 +99,7 @@ public class FootballMatch {
                         persist.deleteAllRowsFromTable("matches");
                         persist.deleteAllRowsFromTable("teams");
                         utils.createTeams();
-                        roundNum = 1; matchIndex=1; matchesInRound =0;
+                        roundNum = 1; matchesInRound =0;
                         try {
                             Thread.sleep(3000);
                         } catch (InterruptedException e) {
